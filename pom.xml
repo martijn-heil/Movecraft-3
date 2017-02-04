@@ -59,11 +59,11 @@
 		</repository>
     	<repository>
         	<id>cannons-repo</id>
-		<url>https://github.com/DerPavlov/mvn-repo/raw/master/</url>
+		    <url>https://github.com/DerPavlov/mvn-repo/raw/master/</url>
     	</repository>
         <repository>
             <id>vault-repo</id>
-            <url>http://nexus.theyeticave.net/content/repositories/pub_releases</url>
+            <url>http://nexus.hc.to/content/repositories/pub_releases</url>
         </repository>
         <repository>
             <id>ess-repo</id>
@@ -176,7 +176,7 @@
         <dependency>
 	        <groupId>at.pavlov</groupId>
     	    <artifactId>Cannons</artifactId>
-        	<version>LATEST</version>
+        	<version>2.4.6-SNAPSHOT</version> <!-- Highest version that is working for some reason -->
         	<exclusions>
         		<exclusion>
         			<artifactId>dummypermscompat</artifactId>
@@ -198,7 +198,7 @@
         <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>bukkit</artifactId>
-            <version>1.9.2-R0.1-SNAPSHOT</version>
+            <version>1.11.2-R0.1-SNAPSHOT</version>
             <type>jar</type>
             <scope>provided</scope>
         </dependency>
@@ -206,22 +206,22 @@
 		<dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>craftbukkit</artifactId>
-            <version>1.9.2-R0.1-SNAPSHOT</version>
+            <version>1.11.2-R0.1-SNAPSHOT</version>
             <scope>system</scope>
             <systemPath>${project.basedir}/libs/craftbukkit.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>net.milkbowl.vault</groupId>
             <artifactId>VaultAPI</artifactId>
-            <version>1.5</version>
+            <version>1.6</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>net.ess3</groupId>
             <artifactId>Essentials</artifactId>
             <version>2.13.1</version>
-        </dependency> 
-        <!-- This doesn't have a maven repo but its own -->
+        </dependency>
+         <!--This doesn't have a maven repo but its own-->
         <dependency>
             <groupId>com.palmergames</groupId>
             <artifactId>Towny</artifactId>

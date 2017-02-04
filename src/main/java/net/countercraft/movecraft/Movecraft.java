@@ -17,46 +17,30 @@
 
 package net.countercraft.movecraft;
 
-import net.countercraft.movecraft.async.AsyncManager;
 import at.pavlov.cannons.Cannons;
-
-
-
-
-
-
 import com.earth2me.essentials.Essentials;
+import com.mewin.WGCustomFlags.WGCustomFlagsPlugin;
+import com.palmergames.bukkit.towny.Towny;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-
+import com.sk89q.worldguard.protection.flags.StateFlag;
+import net.countercraft.movecraft.async.AsyncManager;
 import net.countercraft.movecraft.config.Settings;
 import net.countercraft.movecraft.craft.CraftManager;
 import net.countercraft.movecraft.items.StorageChestItem;
-import net.countercraft.movecraft.listener.BlockListener;
-import net.countercraft.movecraft.listener.CommandListener;
-import net.countercraft.movecraft.listener.InteractListener;
-import net.countercraft.movecraft.listener.PlayerListener;
-import net.countercraft.movecraft.listener.WorldEditInteractListener;
+import net.countercraft.movecraft.listener.*;
 import net.countercraft.movecraft.localisation.I18nSupport;
-import net.countercraft.movecraft.metrics.MovecraftMetrics;  
+import net.countercraft.movecraft.metrics.MovecraftMetrics;
 import net.countercraft.movecraft.utils.MapUpdateManager;
 import net.countercraft.movecraft.utils.MovecraftLocation;
 import net.countercraft.movecraft.utils.TownyUtils;
 import net.countercraft.movecraft.utils.WGCustomFlagsUtils;
 import net.milkbowl.vault.economy.Economy;
-
-import com.mewin.WGCustomFlags.WGCustomFlagsPlugin;
-import com.palmergames.bukkit.towny.Towny;
-import com.sk89q.worldguard.protection.flags.StateFlag;
-
-import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.craftbukkit.v1_9_R1.util.CraftMagicNumbers;
-import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.util.Vector;
+import org.bukkit.craftbukkit.v1_11_R1.util.CraftMagicNumbers;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
@@ -68,10 +52,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -118,8 +99,8 @@ public class Movecraft extends JavaPlugin {
     private void disableShadow(int typeID) {
 		Method method;
 		try {
-			net.minecraft.server.v1_9_R1.Block tempBlock=CraftMagicNumbers.getBlock(typeID);
-			method = net.minecraft.server.v1_9_R1.Block.class.getDeclaredMethod("d", int.class);
+			net.minecraft.server.v1_11_R1.Block tempBlock= CraftMagicNumbers.getBlock(typeID);
+			method = net.minecraft.server.v1_11_R1.Block.class.getDeclaredMethod("d", int.class);
 			method.setAccessible(true);
 			method.invoke(tempBlock, 0);
 		} catch (NoSuchMethodException e1) {
@@ -161,7 +142,7 @@ public class Movecraft extends JavaPlugin {
 		Settings.CompatibilityMode = getConfig().getBoolean("CompatibilityMode", false);
 		if(Settings.CompatibilityMode==false) {
 			try {
-				 	Class.forName( "net.minecraft.server.v1_9_R1.Chunk" );
+				 	Class.forName( "net.minecraft.server.v1_11_R1.Chunk" );
 				} catch( ClassNotFoundException e ) {
 					Settings.CompatibilityMode=true;
 					logger.log(Level.INFO, "WARNING: CompatibilityMode was set to false, but required build-specific classes were not found. FORCING COMPATIBILITY MODE");

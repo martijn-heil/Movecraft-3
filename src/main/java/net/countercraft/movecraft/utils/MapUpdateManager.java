@@ -18,63 +18,36 @@
 package net.countercraft.movecraft.utils;
 
 import com.earth2me.essentials.User;
-
+import com.sk89q.worldedit.blocks.BaseBlock;
+import com.sk89q.worldedit.blocks.SignBlock;
+import com.sk89q.worldguard.protection.ApplicableRegionSet;
+import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import net.countercraft.movecraft.Movecraft;
 import net.countercraft.movecraft.config.Settings;
 import net.countercraft.movecraft.craft.Craft;
 import net.countercraft.movecraft.craft.CraftManager;
 import net.countercraft.movecraft.items.StorageChestItem;
 import net.countercraft.movecraft.localisation.I18nSupport;
-import net.countercraft.movecraft.utils.datastructures.InventoryTransferHolder;
-import net.countercraft.movecraft.utils.datastructures.SignTransferHolder;
 import net.countercraft.movecraft.utils.FastBlockChanger.ChunkUpdater;
-import net.countercraft.movecraft.utils.datastructures.CommandBlockTransferHolder;
-import net.countercraft.movecraft.utils.datastructures.StorageCrateTransferHolder;
-import net.countercraft.movecraft.utils.datastructures.TransferData;
-import net.minecraft.server.v1_9_R1.BlockPosition;
-import net.minecraft.server.v1_9_R1.ChunkCoordIntPair;
-import net.minecraft.server.v1_9_R1.EnumSkyBlock;
-import net.minecraft.server.v1_9_R1.IBlockData;
-
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Chunk;
-import org.bukkit.Effect;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import net.countercraft.movecraft.utils.datastructures.*;
+import net.minecraft.server.v1_11_R1.BlockPosition;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
-import org.bukkit.block.Sign;
 import org.bukkit.block.CommandBlock;
-import org.bukkit.craftbukkit.v1_9_R1.CraftChunk;
-import org.bukkit.craftbukkit.v1_9_R1.CraftWorld;
-import org.bukkit.craftbukkit.v1_9_R1.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_9_R1.util.CraftMagicNumbers;
+import org.bukkit.block.Sign;
+import org.bukkit.craftbukkit.v1_11_R1.CraftChunk;
+import org.bukkit.craftbukkit.v1_11_R1.util.CraftMagicNumbers;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
-import org.bukkit.util.Vector;
 
-import com.sk89q.worldedit.blocks.BaseBlock;
-import com.sk89q.worldedit.blocks.SignBlock;
-import com.sk89q.worldguard.protection.ApplicableRegionSet;
-import com.sk89q.worldguard.protection.flags.DefaultFlag;
-
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.*;
 import java.util.logging.Level;
-
-import net.minecraft.server.v1_9_R1.EntityTNTPrimed;
-
-import org.bukkit.event.entity.ExplosionPrimeEvent;
 
 public class MapUpdateManager extends BukkitRunnable {
 	private final HashMap<World, ArrayList<MapUpdateCommand>> updates = new HashMap<World, ArrayList<MapUpdateCommand>>();
@@ -92,7 +65,7 @@ public class MapUpdateManager extends BukkitRunnable {
 		private static final MapUpdateManager INSTANCE = new MapUpdateManager();
 	}
 	
-	private void updateBlock(MapUpdateCommand m, World w, Map<MovecraftLocation, TransferData> dataMap, Set<net.minecraft.server.v1_9_R1.Chunk> chunks, Set<Chunk> cmChunks, HashMap<MovecraftLocation, Byte> origLightMap, boolean placeDispensers) {
+	private void updateBlock(MapUpdateCommand m, World w, Map<MovecraftLocation, TransferData> dataMap, Set<net.minecraft.server.v1_11_R1.Chunk> chunks, Set<Chunk> cmChunks, HashMap<MovecraftLocation, Byte> origLightMap, boolean placeDispensers) {
 		MovecraftLocation workingL = m.getNewBlockLocation();
 		final int[] blocksToBlankOut = new int[]{ 54, 61, 62, 63, 68, 116, 117, 145, 146, 149, 150, 154, 158 };		
 
@@ -110,7 +83,7 @@ public class MapUpdateManager extends BukkitRunnable {
 		
 		chunk = w.getBlockAt( x, y, z ).getChunk();
 
-		net.minecraft.server.v1_9_R1.Chunk c = null;
+		net.minecraft.server.v1_11_R1.Chunk c = null;
 		Chunk cmC = null;
 		if(Settings.CompatibilityMode) {
 			cmC = w.getBlockAt( x, y, z ).getChunk();
@@ -626,7 +599,7 @@ public class MapUpdateManager extends BukkitRunnable {
                                 Map<MovecraftLocation, List<ItemDropUpdateCommand>> itemMap = new HashMap<MovecraftLocation, List<ItemDropUpdateCommand>>();
 				Map<MovecraftLocation, TransferData> dataMap = new HashMap<MovecraftLocation, TransferData>();
 				HashMap<MovecraftLocation, Byte> origLightMap = new HashMap<MovecraftLocation, Byte>();
-				Set<net.minecraft.server.v1_9_R1.Chunk> chunks = null; 
+				Set<net.minecraft.server.v1_11_R1.Chunk> chunks = null;
 				Set<Chunk> cmChunks = null;
 //				ArrayList<MapUpdateCommand> queuedMapUpdateCommands = new ArrayList<MapUpdateCommand>();
 //				ArrayList<Boolean> queuedPlaceDispensers = new ArrayList<Boolean>();
@@ -634,7 +607,7 @@ public class MapUpdateManager extends BukkitRunnable {
 				if(Settings.CompatibilityMode) {
 					cmChunks = new HashSet<Chunk>();					
 				} else {
-					chunks = new HashSet<net.minecraft.server.v1_9_R1.Chunk>();
+					chunks = new HashSet<net.minecraft.server.v1_11_R1.Chunk>();
 				}
 				
 				// Make sure all chunks are loaded
@@ -911,7 +884,7 @@ public class MapUpdateManager extends BukkitRunnable {
 					}
 					// queue chunks for lighting recalc
 					if(Settings.CompatibilityMode==false) {
-						for(net.minecraft.server.v1_9_R1.Chunk c : chunks) {
+						for(net.minecraft.server.v1_11_R1.Chunk c : chunks) {
 							ChunkUpdater fChunk=FastBlockChanger.getInstance().getChunk(c.world,c.locX,c.locZ,true);
 							for(int bx=0;bx<16;bx++) {
 								for(int bz=0;bz<16;bz++) {
