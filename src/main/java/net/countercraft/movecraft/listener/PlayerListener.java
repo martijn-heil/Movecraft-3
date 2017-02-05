@@ -17,26 +17,18 @@
 
 package net.countercraft.movecraft.listener;
 
-import java.util.Arrays;
-import java.util.HashSet;
-
-import net.countercraft.movecraft.Movecraft;
-import net.countercraft.movecraft.config.Settings;
 import net.countercraft.movecraft.craft.Craft;
 import net.countercraft.movecraft.craft.CraftManager;
-import net.countercraft.movecraft.localisation.I18nSupport;
-import net.countercraft.movecraft.utils.MathUtils;
 import net.countercraft.movecraft.utils.MovecraftLocation;
-
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
+
+import java.util.Arrays;
+import java.util.HashSet;
 
 public class PlayerListener implements Listener {
 	
@@ -187,48 +179,48 @@ public class PlayerListener implements Listener {
 
 	@EventHandler
 	public void onPlayerMove( PlayerMoveEvent event ) {
-		final Craft c = CraftManager.getInstance().getCraftByPlayer( event.getPlayer() );
-		if ( c != null ) {
-			if ( c.isNotProcessing() && (!MathUtils.playerIsWithinBoundingPolygon( c.getHitBox(), c.getMinX(), c.getMinZ(), MathUtils.bukkit2MovecraftLoc( event.getPlayer().getLocation() ) )) ) {
-
-				if ( !CraftManager.getInstance().getReleaseEvents().containsKey( event.getPlayer() ) && c.getType().getMoveEntities()) {
-					boolean releaseBlocked=false;
-					if(Settings.ManOverBoardTimeout!=0)
-						event.getPlayer().sendMessage( String.format( I18nSupport.getInternationalisedString( "You have left your craft. You may return to your craft by typing /manoverboard any time before the timeout expires" ) ) );						
-					else
-						event.getPlayer().sendMessage( String.format( I18nSupport.getInternationalisedString( "Release - Player has left craft" ) ) );
-					if(c.getBlockList().length>11000) {
-						event.getPlayer().sendMessage( String.format( I18nSupport.getInternationalisedString( "Craft is too big to check its borders. Make sure this area is safe to release your craft in.")));												
-					} else {
-						String ret=checkCraftBorders(c);
-						if(ret!=null) {
-							event.getPlayer().sendMessage( String.format( I18nSupport.getInternationalisedString( "WARNING! There are blocks near your craft that may merge with the craft "+ret)));
-							releaseBlocked=true;
-						}
-					}
-					
-					BukkitTask releaseTask;
-					if(!releaseBlocked) {
-						releaseTask = new BukkitRunnable() {
-	
-							@Override
-							public void run() {
-								CraftManager.getInstance().removeCraft( c );
-							}
-	
-						}.runTaskLater( Movecraft.getInstance(), ( 20 * 30 ) );
-					} else {
-						releaseTask=null; // put the task in as a null just so it doesn't keep pestering the pilot
-					}
-
-					CraftManager.getInstance().getReleaseEvents().put( event.getPlayer(), releaseTask );
-				}
-			} else {
-				if ( CraftManager.getInstance().getReleaseEvents().containsKey(event.getPlayer()) && c.getType().getMoveEntities()) {
-					CraftManager.getInstance().removeReleaseTask(c);
-				}
-			}
-		}
+//		final Craft c = CraftManager.getInstance().getCraftByPlayer( event.getPlayer() );
+//		if ( c != null ) {
+//			if ( c.isNotProcessing() && (!MathUtils.playerIsWithinBoundingPolygon( c.getHitBox(), c.getMinX(), c.getMinZ(), MathUtils.bukkit2MovecraftLoc( event.getPlayer().getLocation() ) )) ) {
+//
+//				if ( !CraftManager.getInstance().getReleaseEvents().containsKey( event.getPlayer() ) && c.getType().getMoveEntities()) {
+//					boolean releaseBlocked=false;
+//					if(Settings.ManOverBoardTimeout!=0)
+//						event.getPlayer().sendMessage( String.format( I18nSupport.getInternationalisedString( "You have left your craft. You may return to your craft by typing /manoverboard any time before the timeout expires" ) ) );
+//					else
+//						event.getPlayer().sendMessage( String.format( I18nSupport.getInternationalisedString( "Release - Player has left craft" ) ) );
+//					if(c.getBlockList().length>11000) {
+//						event.getPlayer().sendMessage( String.format( I18nSupport.getInternationalisedString( "Craft is too big to check its borders. Make sure this area is safe to release your craft in.")));
+//					} else {
+//						String ret=checkCraftBorders(c);
+//						if(ret!=null) {
+//							event.getPlayer().sendMessage( String.format( I18nSupport.getInternationalisedString( "WARNING! There are blocks near your craft that may merge with the craft "+ret)));
+//							releaseBlocked=true;
+//						}
+//					}
+//
+//					BukkitTask releaseTask;
+//					if(!releaseBlocked) {
+//						releaseTask = new BukkitRunnable() {
+//
+//							@Override
+//							public void run() {
+//								CraftManager.getInstance().removeCraft( c );
+//							}
+//
+//						}.runTaskLater( Movecraft.getInstance(), ( 20 * 30 ) );
+//					} else {
+//						releaseTask=null; // put the task in as a null just so it doesn't keep pestering the pilot
+//					}
+//
+//					CraftManager.getInstance().getReleaseEvents().put( event.getPlayer(), releaseTask );
+//				}
+//			} else {
+//				if ( CraftManager.getInstance().getReleaseEvents().containsKey(event.getPlayer()) && c.getType().getMoveEntities()) {
+//					CraftManager.getInstance().removeReleaseTask(c);
+//				}
+//			}
+//		}
 	}
 
 /*	@EventHandler

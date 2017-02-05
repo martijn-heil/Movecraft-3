@@ -165,15 +165,15 @@ public class MapUpdateManager extends BukkitRunnable {
 					w.getBlockAt(x, y, z).setType(org.bukkit.Material.AIR);
 					}
 				fChunk.setBlock(new BlockPosition(x, y, z), ibd);
-			}*/
-//			 removing to try new fast block changer system
+			} */
+			 // removing to try new fast block changer system
 			BlockPosition position = new BlockPosition(x, y, z);
 
 			if((origType==149 || origType==150) && m.getWorldEditBaseBlock()==null) { // bukkit can't remove comparators safely, it screws up the NBT data. So turn it to a sign, then remove it.
 
 				c.a( position, CraftMagicNumbers.getBlock(org.bukkit.Material.AIR).fromLegacyData(0));
 				c.a( position, CraftMagicNumbers.getBlock(org.bukkit.Material.SIGN_POST).fromLegacyData(0));
-				
+
 				BlockState state=w.getBlockAt( x, y, z ).getState();
 				Sign s=(Sign)state;
 				s.setLine(0, "PLACEHOLDER");
@@ -187,14 +187,14 @@ public class MapUpdateManager extends BukkitRunnable {
 					chunks.add( c );
 				}
 			} else {
-		
+
 				if(origType!=newTypeID || origData!=data) {
 					boolean doBlankOut=(Arrays.binarySearch(blocksToBlankOut,newTypeID)>=0);
 					if(doBlankOut) {
 						c.a( position, CraftMagicNumbers.getBlock(0).fromLegacyData(0) );
 						w.getBlockAt(x, y, z).setType(org.bukkit.Material.AIR);
 					}
-					
+
 
 					if(m.getWorldEditBaseBlock()==null) {
 						success = c.a( position, CraftMagicNumbers.getBlock(newTypeID).fromLegacyData(data) ) != null;
@@ -207,7 +207,7 @@ public class MapUpdateManager extends BukkitRunnable {
 								s.setLine( i, ((SignBlock)m.getWorldEditBaseBlock()).getText()[i] );
 							}
 							s.update();
-						}						
+						}
 					}
 
 				} else {

@@ -47,12 +47,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.lang.management.ManagementFactory;
+import java.lang.management.RuntimeMXBean;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -123,6 +122,14 @@ public class Movecraft extends JavaPlugin {
 
         @Override
 	public void onEnable() {
+			RuntimeMXBean runtimeMxBean = ManagementFactory.getRuntimeMXBean();
+			List<String> arguments = runtimeMxBean.getInputArguments();
+			logger.info("Arguments:");
+			for (String arg: arguments)
+			{
+				logger.info(arg);
+			}
+
 		// Read in config            
 		this.saveDefaultConfig();
 		Settings.LOCALE = getConfig().getString("Locale");
